@@ -4,10 +4,10 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var redis = require('socket.io-redis');
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || 6003;
 var serverName = process.env.NAME || 'Unknown';
 
-io.adapter(redis({ host: 'redis', port: 6379 }));
+io.adapter(redis({ host: 'localhost', port: 6379 }));
 
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
@@ -22,6 +22,8 @@ app.use(express.static(__dirname + '/public'));
 var numUsers = 0;
 
 io.on('connection', function (socket) {
+  console.log(process.pid)
+  
   socket.emit('my-name-is', serverName);
 
   var addedUser = false;
