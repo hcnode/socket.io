@@ -6,14 +6,14 @@ var io = require('socket.io')(server);
 var redis = require('socket.io-redis');
 var port = process.env.PORT || 6003;
 var serverName = process.env.NAME || 'Unknown';
-
-io.adapter(redis({ host: 'localhost', port: 6379 }));
-
+var port = 7000 + (process.env.pm_id - 0);
+io.adapter(redis({ host: 'localhost', port:  port}));
+io.set('transports', ['polling']);
 server.listen(port, function () {
   console.log('Server listening at port %d', port);
   console.log('Hello, I\'m %s, how can I help?', serverName);
 });
-
+res.cookie('socket-io-port', port);
 // Routing
 app.use(express.static(__dirname + '/public'));
 
